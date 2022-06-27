@@ -9,10 +9,19 @@ function drawLine(ctx : CanvasRenderingContext2D, x0 : number, y0 : number, x1 :
 }
 
 function drawRandomLine(ctx : CanvasRenderingContext2D, xmin : number, ymin : number, xmax : number, ymax : number) {
-  if (Math.random() > 0.5) {
-    drawLine(ctx, xmin, ymin, xmax, ymax)
+  const r = Math.random()
+  const x = [ xmin, xmin + (xmax - xmin) / 2, xmax ]
+  const y = [ ymin, ymin + (ymax - ymin) / 2, ymax ]
+  if (r > 0.75) {
+    drawLine(ctx, x[0], y[0], x[2], y[2])
+  } else if (r > 0.5) {
+    drawLine(ctx, x[0], y[2], x[2], y[0])
+  } else if (r > 0.25) {
+    ctx.beginPath()
+    ctx.arc(x[1], y[1], 1, 0, 2 * Math.PI, false);
+    ctx.fill();
   } else {
-    drawLine(ctx, xmin, ymax, xmax, ymin)
+    // empty
   }
 }
 
@@ -28,7 +37,7 @@ function App() {
 
   return (
     <div className="App">
-      <Canvas width={400} height={400} drawer={generativeArt} />
+      <Canvas width={800} height={800} drawer={generativeArt} />
     </div>
   );
 }

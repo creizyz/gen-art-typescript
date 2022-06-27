@@ -11,16 +11,21 @@ interface CanvasProps {
 
 export default function Canvas(props : CanvasProps) {
     const ref = useRef<HTMLCanvasElement>(null);
-
-    useEffect(() => {
+    const draw = () => {
         const ctx = ref.current?.getContext("2d");
         if (ctx) {
             console.log("drawing generative art...");
+            ctx.clearRect(0, 0, props.width, props.height);
             props.drawer(ctx, props.width, props.height);
         }
-    })
+    }
+
+    useEffect(draw)
 
     return (
-        <canvas className="canvas" ref={ref} {...props} />
+        <div className="canvas-container">
+            <canvas className="canvas" ref={ref} {...props} />
+            <button className="canvas-button" onClick={draw}>redraw</button>
+        </div>
     )
 }
